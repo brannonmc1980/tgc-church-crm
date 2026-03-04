@@ -45,6 +45,7 @@ export default function ChurchMap({ churches }: { churches: ChurchPin[] }) {
   const [selected, setSelected] = useState<ChurchPin | null>(null);
   const [selection, setSelection] = useState<ChurchPin[]>([]);
   const [mode, setMode] = useState<"list" | "selection">("list");
+  const [clearDrawTrigger, setClearDrawTrigger] = useState(0);
 
   const withCoords = churches.filter((c) => c.latitude && c.longitude);
   const noCoords = churches.filter((c) => !c.latitude || !c.longitude);
@@ -83,6 +84,7 @@ export default function ChurchMap({ churches }: { churches: ChurchPin[] }) {
           onSelect={(c) => { setSelected(c); setMode("list"); }}
           selected={selected}
           onSelection={handleSelection}
+          clearDrawTrigger={clearDrawTrigger}
         />
 
         {/* Legend */}
@@ -122,7 +124,7 @@ export default function ChurchMap({ churches }: { churches: ChurchPin[] }) {
                 <button onClick={exportSelectionCSV} className="text-xs text-sage hover:text-sage-dark font-medium">
                   Export CSV
                 </button>
-                <button onClick={() => { setMode("list"); setSelection([]); }} className="text-xs text-stone-400 hover:text-navy">
+                <button onClick={() => { setMode("list"); setSelection([]); setClearDrawTrigger((n) => n + 1); }} className="text-xs text-stone-400 hover:text-navy">
                   Clear
                 </button>
               </div>

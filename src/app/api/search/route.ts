@@ -139,7 +139,8 @@ State codes are two-letter (SC for South Carolina, GA for Georgia, etc.)
 
 Engagement status options: COUNCIL, ENGAGED, AWARE, POTENTIAL, LOW_POTENTIAL, OPPOSED
 
-Always be helpful and interpret the user's intent. If results come back, summarize them clearly.`;
+Always be helpful and interpret the user's intent. If results come back, summarize them clearly.
+Respond in plain text only — do not use markdown formatting, bullet points, bold, headers, or any special characters. Write in plain prose sentences.`;
 
     let response = await client.messages.create({
       model: "claude-opus-4-6",

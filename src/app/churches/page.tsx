@@ -3,6 +3,8 @@ export const dynamic = "force-dynamic";
 import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { Church } from "@prisma/client";
+import { Suspense } from "react";
+import ChurchFilters from "@/components/ChurchFilters";
 
 const PAGE_SIZE = 50;
 
@@ -112,28 +114,9 @@ export default async function ChurchesPage({ searchParams }: { searchParams: Sea
       </div>
 
       {/* Search & Filters */}
-      <form method="get" className="flex flex-wrap gap-3 mb-6">
-        <div className="relative flex-1 min-w-52">
-          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <input name="q" defaultValue={searchParams.q} placeholder="Search by name, pastor, city..." className="input pl-9" />
-        </div>
-        <select name="state" defaultValue={searchParams.state} className="input w-36">
-          <option value="">All States</option>
-          {filters.states.map((s) => <option key={s} value={s}>{s}</option>)}
-        </select>
-        <select name="denomination" defaultValue={searchParams.denomination} className="input w-48">
-          <option value="">All Denominations</option>
-          {filters.denominations.map((d) => <option key={d} value={d}>{d}</option>)}
-        </select>
-        <select name="status" defaultValue={searchParams.status} className="input w-44">
-          <option value="">All Statuses</option>
-          {Object.entries(STATUS_LABELS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-        </select>
-        <button type="submit" className="btn-primary">Search</button>
-        {hasFilters && <Link href="/churches" className="btn-secondary">Clear</Link>}
-      </form>
+      <Suspense>
+        <ChurchFilters states={filters.states} denominations={filters.denominations} />
+      </Suspense>
 
       {/* Church list */}
       {churches.length === 0 ? (

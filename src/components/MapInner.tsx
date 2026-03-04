@@ -59,28 +59,35 @@ function FlyToSelected({ church }: { church: ChurchPin | null }) {
   return null;
 }
 
-function DrawControl({ onSelectionChange, churches }: {
+function DrawControl({ onSelectionChange, churches, clearTrigger }: {
   onSelectionChange: (churches: ChurchPin[]) => void;
   churches: ChurchPin[];
+  clearTrigger: number;
 }) {
   const map = useMap();
   const drawGroupRef = useRef<L.FeatureGroup>(new L.FeatureGroup());
   const churchesRef = useRef(churches);
   churchesRef.current = churches;
 
+  // Clear drawn shapes when parent requests it
+  useEffect(() => {
+    if (clearTrigger > 0) {
+      drawGroupRef.current.clearLayers();
+    }
+  }, [clearTrigger]);
+
   useEffect(() => {
     const drawGroup = drawGroupRef.current;
     drawGroup.addTo(map);
 
-    // leaflet-draw attaches to L.Control.Draw
     const LDraw = (L.Control as unknown as { Draw: new (opts: unknown) => L.Control }).Draw;
     if (!LDraw) return;
 
     const drawControl = new LDraw({
       position: "topright",
       draw: {
-        polygon: { shapeOptions: { color: "#87b575", fillOpacity: 0.1, weight: 2 } },
-        rectangle: { shapeOptions: { color: "#87b575", fillOpacity: 0.1, weight: 2 } },
+        polygon: { shapeOptions: { color: "#87b575", fillOpacity: 0.15, weight: 2 } },
+        rectangle: { shapeOptions: { color: "#87b575", fillOpacity: 0.15, weight: 2 } },
         circle: false,
         circlemarker: false,
         marker: false,
@@ -106,17 +113,31 @@ function DrawControl({ onSelectionChange, churches }: {
       onSelectionChange(inside);
     };
 
-    const handleDeleted = () => {
-      onSelectionChange([]);
+    const handleDeleted = () => onSelectionChange([]);
+    const handleEdited = () => {
+      // Re-run selection after editing the polygon
+      const layers = drawGroup.getLayers();
+      if (layers.length === 0) { onSelectionChange([]); return; }
+      const layer = layers[0] as L.Polygon;
+      const geoJson = layer.toGeoJSON();
+      const coords = (geoJson.geometry as { coordinates: number[][][] }).coordinates;
+      const poly = turfPolygon(coords);
+      const inside = churchesRef.current.filter((c) => {
+        if (!c.latitude || !c.longitude) return false;
+        return booleanPointInPolygon(point([c.longitude, c.latitude]), poly);
+      });
+      onSelectionChange(inside);
     };
 
     map.on("draw:created", handleCreated);
     map.on("draw:deleted", handleDeleted);
+    map.on("draw:edited", handleEdited);
 
     return () => {
       map.removeControl(drawControl);
       map.off("draw:created", handleCreated);
       map.off("draw:deleted", handleDeleted);
+      map.off("draw:edited", handleEdited);
       drawGroup.clearLayers();
       map.removeLayer(drawGroup);
     };
@@ -131,11 +152,13 @@ export default function MapInner({
   onSelect,
   selected,
   onSelection,
+  clearDrawTrigger,
 }: {
   churches: ChurchPin[];
   onSelect: (c: ChurchPin) => void;
   selected: ChurchPin | null;
   onSelection: (churches: ChurchPin[]) => void;
+  clearDrawTrigger: number;
 }) {
   const center: [number, number] = [33.8, -83.0];
 
@@ -146,7 +169,7 @@ export default function MapInner({
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <FlyToSelected church={selected} />
-      <DrawControl onSelectionChange={onSelection} churches={churches} />
+      <DrawControl onSelectionChange={onSelection} churches={churches} clearTrigger={clearDrawTrigger} />
       {churches.map((church) => {
         if (!church.latitude || !church.longitude) return null;
         const color = STATUS_PIN_COLORS[church.status ?? ""] ?? "#87b575";
