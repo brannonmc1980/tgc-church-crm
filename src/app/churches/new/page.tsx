@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import ChurchForm from "@/components/ChurchForm";
 import { prisma } from "@/lib/db";
 import Link from "next/link";

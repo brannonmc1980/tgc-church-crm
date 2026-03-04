@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import ChurchMap from "@/components/ChurchMap";
 import { prisma } from "@/lib/db";
 
