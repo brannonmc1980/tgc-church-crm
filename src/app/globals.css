@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Leaflet map styles */
+@import 'leaflet/dist/leaflet.css';
+
+:root {
+  --color-navy: #20272a;
+  --color-sage: #87b575;
+  --color-sage-dark: #6d9960;
+  --color-stone-50: #fbfbfa;
+  --color-stone-100: #e8e4df;
+  --color-stone-200: #d3cfca;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-stone-50);
+    color: var(--color-navy);
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  * {
+    box-sizing: border-box;
+    border-color: #e8e4df; /* stone-100 as default border color */
+  }
+
+  /* Thin, clean scrollbar — Adaline-inspired */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #d3cfca;
+    border-radius: 2px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #b8b3ad;
+  }
+
+  /* Mono font for numeric data, codes, technical fields */
+  code, kbd, samp, .font-mono {
+    font-family: "fragmentMono", "SFMono-Regular", "SF Mono", "JetBrains Mono", "Fira Code",
+      "Source Code Pro", ui-monospace, Menlo, Monaco, Consolas, "Courier New", monospace;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-sage hover:bg-sage-dark text-white font-medium px-4 py-2 rounded-lg transition-colors duration-150 text-sm;
+  }
+
+  .btn-secondary {
+    @apply bg-white hover:bg-stone-50 text-navy font-medium px-4 py-2 rounded-lg transition-colors duration-150 text-sm border border-stone-200;
+  }
+
+  .btn-ghost {
+    @apply text-stone-500 hover:text-navy hover:bg-stone-100 font-medium px-4 py-2 rounded-lg transition-colors duration-150 text-sm;
+  }
+
+  /* Adaline-inspired input: thin 1px border, no shadow, clean focus ring */
+  .input {
+    @apply w-full bg-white border border-stone-200 rounded-lg px-3 py-2 text-sm text-navy placeholder-stone-400 focus:outline-none focus:ring-1 focus:ring-sage/40 focus:border-sage/60 transition-all duration-150;
+  }
+
+  .label {
+    @apply block text-xs font-medium text-stone-400 uppercase tracking-widest mb-1.5;
+  }
+
+  /* Clean card with thin 1px border, no heavy shadows */
+  .card {
+    @apply bg-white rounded-xl border border-stone-100;
+  }
+
+  .section-header {
+    @apply text-xs font-medium text-stone-400 uppercase tracking-widest mb-3;
+  }
+
+  /* Status badges */
+  .badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium;
+  }
+}

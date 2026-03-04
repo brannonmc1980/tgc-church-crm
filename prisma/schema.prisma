@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum EngagementStatus {
+  COUNCIL
+  ENGAGED
+  AWARE
+  POTENTIAL
+  LOW_POTENTIAL
+  OPPOSED
+}
+
+model Church {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Church info
+  name         String
+  denomination String?
+  address      String?
+  city         String?
+  state        String?
+  zip          String?
+  website      String?
+  phone        String?
+
+  // Engagement / relationship status with TGC
+  status EngagementStatus?
+
+  // Geo coordinates (populated from address for distance search)
+  latitude  Float?
+  longitude Float?
+
+  // Lead Pastor
+  pastorName  String?
+  pastorEmail String?
+  pastorCell  String?
+
+  // Associate Pastor
+  associatePastorName  String?
+  associatePastorEmail String?
+  associatePastorCell  String?
+
+  // Social Media
+  facebook  String?
+  instagram String?
+  twitter   String?
+  youtube   String?
+
+  // Internal
+  notes String?
+
+  @@index([state])
+  @@index([denomination])
+  @@index([zip])
+  @@index([status])
+}
