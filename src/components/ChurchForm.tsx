@@ -79,155 +79,147 @@ export default function ChurchForm({ church, onSubmit }: ChurchFormProps) {
         ))}
       </div>
 
-      {/* Church Info Tab */}
-      {activeTab === "info" && (
-        <div className="space-y-4">
+      {/* Church Info Tab — always in DOM, hidden when inactive */}
+      <div className={activeTab === "info" ? "space-y-4" : "hidden"}>
+        <div>
+          <label className="label">Church Name *</label>
+          <input name="name" required defaultValue={church?.name ?? ""} className="input" placeholder="Grace Community Church" />
+        </div>
+        <div>
+          <label className="label">Denomination</label>
+          <input name="denomination" defaultValue={church?.denomination ?? ""} className="input" placeholder="e.g. PCA, SBC, Non-denominational" />
+        </div>
+        <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="label">Church Name *</label>
-            <input name="name" required defaultValue={church?.name ?? ""} className="input" placeholder="Grace Community Church" />
+            <label className="label">Phone</label>
+            <input name="phone" type="tel" defaultValue={church?.phone ?? ""} className="input" placeholder="(555) 000-0000" />
           </div>
           <div>
-            <label className="label">Denomination</label>
-            <input name="denomination" defaultValue={church?.denomination ?? ""} className="input" placeholder="e.g. PCA, SBC, Non-denominational" />
+            <label className="label">Website</label>
+            <input name="website" type="url" defaultValue={church?.website ?? ""} className="input" placeholder="https://example.com" />
           </div>
+        </div>
+        <div>
+          <label className="label">Street Address</label>
+          <input name="address" defaultValue={church?.address ?? ""} className="input" placeholder="123 Main St" />
+        </div>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="col-span-1">
+            <label className="label">City</label>
+            <input name="city" defaultValue={church?.city ?? ""} className="input" placeholder="Greenville" />
+          </div>
+          <div>
+            <label className="label">State</label>
+            <select name="state" defaultValue={church?.state ?? ""} className="input">
+              <option value="">Select state</option>
+              {US_STATES.map((s) => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className="label">ZIP Code</label>
+            <input name="zip" defaultValue={church?.zip ?? ""} className="input" placeholder="29601" />
+          </div>
+        </div>
+      </div>
+
+      {/* Pastoral Staff Tab — always in DOM, hidden when inactive */}
+      <div className={activeTab === "staff" ? "space-y-6" : "hidden"}>
+        <div>
+          <h3 className="text-sm font-semibold text-navy mb-3 pb-2 border-b border-stone-100">Lead Pastor</h3>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="label">Phone</label>
-              <input name="phone" type="tel" defaultValue={church?.phone ?? ""} className="input" placeholder="(555) 000-0000" />
+              <label className="label">Pastor Name</label>
+              <input name="pastorName" defaultValue={church?.pastorName ?? ""} className="input" placeholder="Rev. John Smith" />
             </div>
             <div>
-              <label className="label">Website</label>
-              <input name="website" type="url" defaultValue={church?.website ?? ""} className="input" placeholder="https://example.com" />
-            </div>
-          </div>
-          <div>
-            <label className="label">Street Address</label>
-            <input name="address" defaultValue={church?.address ?? ""} className="input" placeholder="123 Main St" />
-          </div>
-          <div className="grid grid-cols-3 gap-4">
-            <div className="col-span-1">
-              <label className="label">City</label>
-              <input name="city" defaultValue={church?.city ?? ""} className="input" placeholder="Greenville" />
+              <label className="label">Pastor Email</label>
+              <input name="pastorEmail" type="email" defaultValue={church?.pastorEmail ?? ""} className="input" placeholder="pastor@church.com" />
             </div>
             <div>
-              <label className="label">State</label>
-              <select name="state" defaultValue={church?.state ?? ""} className="input">
-                <option value="">Select state</option>
-                {US_STATES.map((s) => <option key={s} value={s}>{s}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className="label">ZIP Code</label>
-              <input name="zip" defaultValue={church?.zip ?? ""} className="input" placeholder="29601" />
+              <label className="label">Pastor Cell</label>
+              <input name="pastorCell" type="tel" defaultValue={church?.pastorCell ?? ""} className="input" placeholder="(555) 000-0000" />
             </div>
           </div>
         </div>
-      )}
-
-      {/* Pastoral Staff Tab */}
-      {activeTab === "staff" && (
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-sm font-semibold text-navy mb-3 pb-2 border-b border-stone-100">Lead Pastor</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="label">Pastor Name</label>
-                <input name="pastorName" defaultValue={church?.pastorName ?? ""} className="input" placeholder="Rev. John Smith" />
-              </div>
-              <div>
-                <label className="label">Pastor Email</label>
-                <input name="pastorEmail" type="email" defaultValue={church?.pastorEmail ?? ""} className="input" placeholder="pastor@church.com" />
-              </div>
-              <div>
-                <label className="label">Pastor Cell</label>
-                <input name="pastorCell" type="tel" defaultValue={church?.pastorCell ?? ""} className="input" placeholder="(555) 000-0000" />
-              </div>
+        <div>
+          <h3 className="text-sm font-semibold text-navy mb-3 pb-2 border-b border-stone-100">Associate Pastor</h3>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="label">Associate Pastor Name</label>
+              <input name="associatePastorName" defaultValue={church?.associatePastorName ?? ""} className="input" placeholder="Rev. James Johnson" />
             </div>
-          </div>
-          <div>
-            <h3 className="text-sm font-semibold text-navy mb-3 pb-2 border-b border-stone-100">Associate Pastor</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="label">Associate Pastor Name</label>
-                <input name="associatePastorName" defaultValue={church?.associatePastorName ?? ""} className="input" placeholder="Rev. James Johnson" />
-              </div>
-              <div>
-                <label className="label">Associate Pastor Email</label>
-                <input name="associatePastorEmail" type="email" defaultValue={church?.associatePastorEmail ?? ""} className="input" placeholder="associate@church.com" />
-              </div>
-              <div>
-                <label className="label">Associate Pastor Cell</label>
-                <input name="associatePastorCell" type="tel" defaultValue={church?.associatePastorCell ?? ""} className="input" placeholder="(555) 000-0000" />
-              </div>
+            <div>
+              <label className="label">Associate Pastor Email</label>
+              <input name="associatePastorEmail" type="email" defaultValue={church?.associatePastorEmail ?? ""} className="input" placeholder="associate@church.com" />
+            </div>
+            <div>
+              <label className="label">Associate Pastor Cell</label>
+              <input name="associatePastorCell" type="tel" defaultValue={church?.associatePastorCell ?? ""} className="input" placeholder="(555) 000-0000" />
             </div>
           </div>
         </div>
-      )}
+      </div>
 
-      {/* Social & Notes Tab */}
-      {activeTab === "social" && (
-        <div className="space-y-4">
-          <div>
-            <h3 className="text-sm font-semibold text-navy mb-3 pb-2 border-b border-stone-100">Social Media</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="label">Facebook</label>
-                <input name="facebook" defaultValue={church?.facebook ?? ""} className="input" placeholder="https://facebook.com/..." />
-              </div>
-              <div>
-                <label className="label">Instagram</label>
-                <input name="instagram" defaultValue={church?.instagram ?? ""} className="input" placeholder="https://instagram.com/..." />
-              </div>
-              <div>
-                <label className="label">Twitter / X</label>
-                <input name="twitter" defaultValue={church?.twitter ?? ""} className="input" placeholder="https://twitter.com/..." />
-              </div>
-              <div>
-                <label className="label">YouTube</label>
-                <input name="youtube" defaultValue={church?.youtube ?? ""} className="input" placeholder="https://youtube.com/..." />
-              </div>
+      {/* Social & Notes Tab — always in DOM, hidden when inactive */}
+      <div className={activeTab === "social" ? "space-y-4" : "hidden"}>
+        <div>
+          <h3 className="text-sm font-semibold text-navy mb-3 pb-2 border-b border-stone-100">Social Media</h3>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="label">Facebook</label>
+              <input name="facebook" defaultValue={church?.facebook ?? ""} className="input" placeholder="https://facebook.com/..." />
+            </div>
+            <div>
+              <label className="label">Instagram</label>
+              <input name="instagram" defaultValue={church?.instagram ?? ""} className="input" placeholder="https://instagram.com/..." />
+            </div>
+            <div>
+              <label className="label">Twitter / X</label>
+              <input name="twitter" defaultValue={church?.twitter ?? ""} className="input" placeholder="https://twitter.com/..." />
+            </div>
+            <div>
+              <label className="label">YouTube</label>
+              <input name="youtube" defaultValue={church?.youtube ?? ""} className="input" placeholder="https://youtube.com/..." />
             </div>
           </div>
-          <div>
-            <label className="label">Internal Notes</label>
-            <textarea
-              name="notes"
-              defaultValue={church?.notes ?? ""}
-              className="input h-32 resize-none"
-              placeholder="Private notes about this church relationship..."
+        </div>
+        <div>
+          <label className="label">Internal Notes</label>
+          <textarea
+            name="notes"
+            defaultValue={church?.notes ?? ""}
+            className="input h-32 resize-none"
+            placeholder="Private notes about this church relationship..."
+          />
+        </div>
+      </div>
+
+      {/* Engagement Status Tab — always in DOM, hidden when inactive */}
+      <div className={activeTab === "status" ? "space-y-3" : "hidden"}>
+        <p className="text-sm text-stone-500 mb-4">Select the engagement level for this church&apos;s relationship with TGC.</p>
+        {ENGAGEMENT_STATUSES.map((s) => (
+          <label key={s.value} className="flex items-start gap-3 p-3 rounded-lg border border-stone-200 hover:border-sage/50 cursor-pointer has-[:checked]:border-sage has-[:checked]:bg-sage/5 transition-colors">
+            <input
+              type="radio"
+              name="status"
+              value={s.value}
+              defaultChecked={church?.status === s.value}
+              className="mt-0.5 accent-sage"
             />
-          </div>
-        </div>
-      )}
-
-      {/* Engagement Status Tab */}
-      {activeTab === "status" && (
-        <div className="space-y-3">
-          <p className="text-sm text-stone-500 mb-4">Select the engagement level for this church&apos;s relationship with TGC.</p>
-          {ENGAGEMENT_STATUSES.map((s) => (
-            <label key={s.value} className="flex items-start gap-3 p-3 rounded-lg border border-stone-200 hover:border-sage/50 cursor-pointer has-[:checked]:border-sage has-[:checked]:bg-sage/5 transition-colors">
-              <input
-                type="radio"
-                name="status"
-                value={s.value}
-                defaultChecked={church?.status === s.value}
-                className="mt-0.5 accent-sage"
-              />
-              <div>
-                <p className="text-sm font-medium text-navy">{s.label}</p>
-                <p className="text-xs text-stone-400 mt-0.5">{s.description}</p>
-              </div>
-            </label>
-          ))}
-          <label className="flex items-start gap-3 p-3 rounded-lg border border-stone-200 hover:border-stone-300 cursor-pointer has-[:checked]:border-stone-300 transition-colors">
-            <input type="radio" name="status" value="" defaultChecked={!church?.status} className="mt-0.5" />
             <div>
-              <p className="text-sm font-medium text-stone-500">No Status</p>
-              <p className="text-xs text-stone-400 mt-0.5">Leave unclassified</p>
+              <p className="text-sm font-medium text-navy">{s.label}</p>
+              <p className="text-xs text-stone-400 mt-0.5">{s.description}</p>
             </div>
           </label>
-        </div>
-      )}
+        ))}
+        <label className="flex items-start gap-3 p-3 rounded-lg border border-stone-200 hover:border-stone-300 cursor-pointer has-[:checked]:border-stone-300 transition-colors">
+          <input type="radio" name="status" value="" defaultChecked={!church?.status} className="mt-0.5" />
+          <div>
+            <p className="text-sm font-medium text-stone-500">No Status</p>
+            <p className="text-xs text-stone-400 mt-0.5">Leave unclassified</p>
+          </div>
+        </label>
+      </div>
 
       {/* Navigation between tabs */}
       <div className="flex items-center justify-between mt-8 pt-5 border-t border-stone-100">
