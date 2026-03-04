@@ -61,13 +61,15 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="px-5 py-5 border-b border-navy-light">
         <div className="flex items-center gap-3">
-          <Image
-            src="/TGC-logo.svg"
-            alt="TGC"
-            width={52}
-            height={23}
-            className="brightness-0 invert"
-          />
+          <Link href="/">
+            <Image
+              src="/TGC-logo.svg"
+              alt="TGC"
+              width={52}
+              height={23}
+              className="brightness-0 invert"
+            />
+          </Link>
           <div className="h-5 w-px bg-stone-600" />
           <span className="text-stone-300 text-xs font-medium tracking-wide">
             Church CRM
