@@ -1,6 +1,6 @@
-export const dynamic = "force-dynamic";
-
 "use server";
+
+export const dynamic = "force-dynamic";
 
 import ChurchForm from "@/components/ChurchForm";
 import { prisma } from "@/lib/db";
