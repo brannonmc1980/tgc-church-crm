@@ -1,5 +1,3 @@
-"use server";
-
 export const dynamic = "force-dynamic";
 
 import ChurchForm from "@/components/ChurchForm";
