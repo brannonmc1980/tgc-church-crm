@@ -39,7 +39,7 @@
     "@types/papaparse": "^5.3.14",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "@types/zipcodes": "^1.1.3",
+    "@types/zipcodes": "^8.0.5",
     "tsx": "^4.7.1",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
